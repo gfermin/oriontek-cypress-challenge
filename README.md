@@ -1,4 +1,4 @@
-# QA Coding Challenge - Cypress (Senior QA Automation)
+# QA Coding Challenge - Cypress
 
 ## Stack
 - Cypress
