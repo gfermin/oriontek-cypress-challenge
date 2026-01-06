@@ -1,0 +1,54 @@
+name: Cypress E2E
+
+on:
+  pull_request:
+    branches: ["**"]
+  push:
+    branches: ["main"]
+
+jobs:
+  smoke:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - run: npm ci
+      - name: Run smoke suite
+        run: npm run test:smoke
+      - name: Upload Mochawesome report (smoke)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mochawesome-smoke
+          path: |
+            cypress/reports
+            mochawesome-report
+            cypress/screenshots
+
+  regression:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - run: npm ci
+      - name: Run regression suite
+        run: npm run test:regression
+      - name: Upload Mochawesome report (regression)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mochawesome-regression
+          path: |
+            cypress/reports
+            mochawesome-report
+            cypress/screenshots

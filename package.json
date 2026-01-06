@@ -13,10 +13,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@cypress/grep": "^5.0.1",
     "cypress": "^15.8.1",
     "cypress-iframe": "^1.0.1",
+    "cypress-mochawesome-reporter": "^4.0.2",
     "dayjs": "^1.11.19",
     "eslint": "^9.39.2",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^5.1.0",
+    "mochawesome-report-generator": "^6.3.2",
     "prettier": "^3.7.4"
   }
 }
