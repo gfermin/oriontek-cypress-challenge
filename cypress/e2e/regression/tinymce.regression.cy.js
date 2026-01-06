@@ -1,23 +1,25 @@
 import { TinyMCEPage } from "../../pages/TinyMCEPage";
 
-describe("Regression - TineMCE", () => {
+describe("@regression Regression - TineMCE", () => {
   const page = new TinyMCEPage();
 
-  it("Aplica formato sin text y valida que el editor no quede vacio", () => {
-    page.visitPage();
+  it(
+    "TC-TMCE-002 - Empty Editor Without Crashing",
+    { tags: "@regression" },
+    () => {
+      page.visitPage();
 
-    cy.textWithDateTime().then((stamp) => {
-      const message = `OrionTek Challenge - ${stamp}`;
+      cy.textWithDateTime("Automated text 2").then(({ text, stamp }) => {
+        page.clearEditor();
+        page.typeBoldText(text);
+        page.alignCenter();
+        page.setTextColorRead();
 
-      page.clearEditor();
-      page.typeBoldText(message);
-      page.alignCenter();
-      page.setTextColorRead();
-
-      page.getEditorText().then((txt) => {
-        expect(txt.trim().length).to.be.greaterThan(0);
-        expect(txt).to.include(stamp);
+        page.getEditorText().then((txt) => {
+          expect(txt.trim().length).to.be.greaterThan(0);
+          expect(txt).to.include(stamp);
+        });
       });
-    });
-  });
+    }
+  );
 });

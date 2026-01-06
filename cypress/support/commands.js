@@ -25,17 +25,22 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 import dayjs from "dayjs";
+import { TextBuilder } from "./builders/textBuilder";
 
 //Dynamic text with current date and time
-Cypress.Commands.add("textWithDateTime", () => {
-    return `Test executed at ${dayjs().format("DD/MM/YYYY HH:mm:ss")}`;
-})
+Cypress.Commands.add("textWithDateTime", (prefix = "Automated text") => {
+  const { text, stamp } = new TextBuilder().withPrefix(prefix).build();
+  return cy.wrap({ text, stamp }, { log: false });
+});
+// Cypress.Commands.add("textWithDateTime", () => {
+//     return `Test executed at ${dayjs().format("DD/MM/YYYY HH:mm:ss")}`;
+// })
 
 //Get the iframe body by selector
-Cypress.Commands.add("getIframeBody", iframeSelector => {
-    return cy
-        .get(iframeSelector)
-        .its("0.contentDocument.body")
-        .should("not.be.empty")
-        .then(cy.wrap)
-})
+Cypress.Commands.add("getIframeBody", (iframeSelector) => {
+  return cy
+    .get(iframeSelector)
+    .its("0.contentDocument.body")
+    .should("not.be.empty")
+    .then(cy.wrap);
+});

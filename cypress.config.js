@@ -1,19 +1,29 @@
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
+  reporter: "cypress-mochawesome-reporter",
+  reporterOptions: {
+    reportDir: "cypress/reports",
+    overwrite: true,
+    html: false,
+    json: true,
+    charts: true,
+    reportPageTitle: "QA Coding Challenge - Cypress Report",
+    embeddedScreenshots: true,
+    inlineAssets: true,
+    saveAllAttempts: false,
+  },
+
   e2e: {
     baseUrl: "https://the-internet.herokuapp.com",
     chromeWebSecurity: false,
+
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      require("cypress-mochawesome-reporter/plugin")(on);
+      return config;
     },
   },
-  retries: {
-    runMode: 1,
-    openMode: 0,
-  },
-  viewportHeight: 720,
-  viewportWidth: 1280,
+
   video: false,
   screenshotOnRunFailure: true,
 });
